@@ -24,6 +24,8 @@ def scan(mode, target, output):
     output.mkdir(parents=True, exist_ok=True)
     common = ["trivy", mode, "--config", str(Path(__file__).resolve().parents[1] / "tools/trivy.yaml"),
               "--ignorefile", "/dev/null", "--scanners", "vuln", "--timeout", "10m", "--quiet"]
+    if mode == "image":
+        common += ["--image-src", "docker"]
     result = subprocess.run(common + ["--format", "json", "--severity", "HIGH,CRITICAL",
                             "--exit-code", "1", "--output", str(output / "scan.json"), str(target)])
     if result.returncode not in (0, 1) or not (output / "scan.json").is_file():

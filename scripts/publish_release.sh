@@ -18,5 +18,7 @@ sha256sum --check lambda.sha256
 cosign sign-blob --yes --bundle lambda.sigstore.json lambda.zip
 cosign verify-blob "${verify[@]}" --bundle lambda.sigstore.json lambda.zip
 cd ../..
-jq -n --arg image "$ref" --arg sha "$GITHUB_SHA" --arg identity "$SIGNER_IDENTITY" --arg run "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" --arg lambda_sha "$(cut -d ' ' -f 1 artifacts/lambda/lambda.sha256)" --slurpfile amd64 artifacts/released-amd64/release.json --slurpfile arm64 artifacts/released-arm64/release.json '{schema:1,commit:$sha,image:$image,signer:$identity,run:$run,lambda_sha256:$lambda_sha,architectures:[$amd64[0],$arm64[0]]}' > artifacts/release.json
+jq -n --arg image "$ref" --arg sha "$GITHUB_SHA" --arg identity "$SIGNER_IDENTITY" --arg run "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" --arg lambda_sha "$(cut -d ' ' -f 1 artifacts/lambda/lambda.sha256)" --arg lambda_sbom_sha "$(sha256sum artifacts/lambda/sbom.cdx.json | cut -d ' ' -f 1)" --slurpfile amd64 artifacts/released-amd64/release.json --slurpfile arm64 artifacts/released-arm64/release.json '{schema:1,commit:$sha,image:$image,signer:$identity,run:$run,lambda_sha256:$lambda_sha,lambda_sbom_sha256:$lambda_sbom_sha,architectures:[$amd64[0],$arm64[0]]}' > artifacts/release.json
+cosign sign-blob --yes --bundle artifacts/release.sigstore.json artifacts/release.json
+cosign verify-blob "${verify[@]}" --bundle artifacts/release.sigstore.json artifacts/release.json
 cat artifacts/release.json >> "$GITHUB_STEP_SUMMARY"
