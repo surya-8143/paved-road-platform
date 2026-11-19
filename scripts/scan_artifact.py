@@ -1,6 +1,8 @@
 """Fail closed on scanner errors or HIGH/CRITICAL findings; retain JSON and SBOM."""
 import argparse
 import hashlib
+import email
+import re
 import json
 import subprocess
 import tempfile
@@ -43,6 +45,8 @@ def scan(mode, target, output):
     print(f"Inventoried {packages} packages; {len(findings)} HIGH/CRITICAL findings", flush=True)
     if result.returncode or findings:
         raise RuntimeError("Vulnerability gate failed; see scan.json")
+    return {(re.sub(r"[-_.]+", "-", p["Name"]).lower(), p["Version"])
+            for item in report["Results"] for p in item.get("Packages", [])}
 
 
 def main():
@@ -54,7 +58,13 @@ def main():
     if args.kind == "lambda":
         with tempfile.TemporaryDirectory(prefix="paved-road-scan-") as temporary:
             extract_package(args.target, temporary)
-            scan("fs", temporary, args.output)
+            inventory = scan("rootfs", temporary, args.output)
+            expected = set()
+            for metadata in Path(temporary).glob("*.dist-info/METADATA"):
+                package = email.message_from_string(metadata.read_text())
+                expected.add((re.sub(r"[-_.]+", "-", package["Name"]).lower(), package["Version"]))
+            if not expected or not expected.issubset(inventory):
+                raise RuntimeError(f"Incomplete Lambda inventory: {expected - inventory}")
         digest = hashlib.sha256(Path(args.target).read_bytes()).hexdigest()
         (args.output / "lambda.sha256").write_text(digest + "  lambda.zip\n")
     else:

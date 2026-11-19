@@ -39,7 +39,7 @@ To exercise the negative security case (failure is expected):
 python3 scripts/scan_artifact.py fs tests/fixtures/vulnerable build/negative-scan
 ```
 
-The fixture intentionally pins an old Jinja2 version. It is never installed in or copied into a released service.
+The fixture intentionally pins an old Django and Jinja2 versions. It is never installed in or copied into a released service.
 
 ## Scope and limitations
 
