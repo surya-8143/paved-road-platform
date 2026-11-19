@@ -23,7 +23,7 @@ Complete the full Paved Road project: shared pipelines, AWS Lambda/DynamoDB depl
 - WSL2 is installed. Initially only docker-desktop was registered.
 - Docker Linux engine 29.6.1 responds, with approximately 8 GB available to the engine.
 - Docker hello-world download/execution test passed. Existing unrelated Docker containers must be preserved.
-- Ubuntu 24.04 installation: first download failed (connection reset); built-in direct-download retry stalled and was stopped; downloading the official image separately with SHA-256 verification before installation.
+- Ubuntu 24.04.5 installed successfully under D:\CLOUD\.local\wsl\Ubuntu-24.04. The image SHA-256 matches the Microsoft WSL manifest. First-launch Linux user setup is pending.
 - Local repositories initialized; remote publication has not occurred.
 
 ## AWS deployment blocker
