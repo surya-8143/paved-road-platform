@@ -13,9 +13,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument("tools", nargs="+")
 parser.add_argument("--directory", type=Path, default=Path.home() / ".local/bin")
 args = parser.parse_args()
-if platform.system() != "Linux" or platform.machine() not in ("x86_64", "AMD64"):
-    raise SystemExit("Tool installer currently supports Linux x86_64 runners only")
-manifest = json.loads((Path(__file__).resolve().parents[1] / "tools/linux-amd64.json").read_text())
+architecture = {"x86_64": "amd64", "aarch64": "arm64"}.get(platform.machine())
+if platform.system() != "Linux" or not architecture:
+    raise SystemExit("Tool installer currently supports Linux amd64/arm64 runners only")
+manifest = json.loads((Path(__file__).resolve().parents[1] / f"tools/linux-{architecture}.json").read_text())
 args.directory.mkdir(parents=True, exist_ok=True)
 for name in args.tools:
     entry = manifest[name]
@@ -37,4 +38,4 @@ for name in args.tools:
     temporary.write_bytes(data)
     temporary.chmod(0o755)
     os.replace(temporary, target)
-    print(f"Installed {name} {entry['version']} (SHA256 verified)")
+    print(f"Installed {name} {entry['version']} (SHA256 verified)", flush=True)
