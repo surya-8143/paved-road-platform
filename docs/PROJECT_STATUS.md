@@ -49,13 +49,13 @@ References checked on 2026-11-19:
 - [x] Public repositories selected with user authorization. Publication awaits a useful initial implementation.
 
 ### 2. Service and supply chain
-- [ ] Tests cover memory storage, DynamoDB behavior and Lambda HTTP event handling.
-- [ ] Container works as non-root with a read-only root filesystem.
+- [x] Tests cover memory storage, stubbed DynamoDB behavior and Lambda HTTP event handling: 20 tests passed locally.
+- [x] Container works as non-root with a read-only root filesystem; HTTP smoke test passed.
 - [ ] Scan every released architecture; sign the exact scanned digest.
 - [ ] Associate SBOMs with the correct artifact digest.
 - [ ] Scan the actual Lambda package and its locked dependencies.
 - [ ] A failing security gate prevents deployment.
-- [ ] Packaging identical locked inputs produces identical ZIP hashes.
+- [x] Packaging identical locked inputs produced identical ZIP hashes in two separate Python 3.12 virtual environments. Clean, network-disabled package smoke test passed.
 
 ### 3. Infrastructure and policy
 - [ ] Format, validate, plan offline and unit-test policies without AWS credentials.
@@ -100,3 +100,7 @@ References checked on 2026-11-19:
 
 The PDF defects above are static-review findings, not yet executed regression tests.
 Still requiring version-specific validation: Kyverno schema and signature formats, action inputs and SHAs, AWS provider arguments, Free Tier API output and exact account permissions.
+
+## Service foundation checkpoint
+
+Implemented in paved-road-template; see its docs/VERIFICATION.md for measured results and limitations. The demo consumer is still a reserved repository. No service has been published to GitHub or deployed to AWS.
