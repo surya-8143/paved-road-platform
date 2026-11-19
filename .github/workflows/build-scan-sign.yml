@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: surya-8143/paved-road-platform
-          ref: a1dbd905dd3330d5096c353124d7c15e685ab243
+          ref: 7f9fb01d8cf6b81014e72ad50e87c40d73fa831c
           path: .platform
           persist-credentials: false
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
@@ -90,7 +90,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: surya-8143/paved-road-platform
-          ref: a1dbd905dd3330d5096c353124d7c15e685ab243
+          ref: 7f9fb01d8cf6b81014e72ad50e87c40d73fa831c
           path: .platform
           persist-credentials: false
       - name: Install scanner
@@ -145,7 +145,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: surya-8143/paved-road-platform
-          ref: a1dbd905dd3330d5096c353124d7c15e685ab243
+          ref: 7f9fb01d8cf6b81014e72ad50e87c40d73fa831c
           path: .platform
           persist-credentials: false
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
@@ -189,7 +189,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: surya-8143/paved-road-platform
-          ref: a1dbd905dd3330d5096c353124d7c15e685ab243
+          ref: 7f9fb01d8cf6b81014e72ad50e87c40d73fa831c
           path: .platform
           persist-credentials: false
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
