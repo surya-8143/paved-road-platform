@@ -23,7 +23,7 @@ Complete the full Paved Road project: shared pipelines, AWS Lambda/DynamoDB depl
 - WSL2 is installed. Initially only docker-desktop was registered.
 - Docker Linux engine 29.6.1 responds, with approximately 8 GB available to the engine.
 - Docker hello-world download/execution test passed. Existing unrelated Docker containers must be preserved.
-- Ubuntu 24.04.5 installed successfully under D:\CLOUD\.local\wsl\Ubuntu-24.04. The image SHA-256 matches the Microsoft WSL manifest. First-launch Linux user setup is pending.
+- Ubuntu 24.04.5 installed successfully under D:\CLOUD\.local\wsl\Ubuntu-24.04. The image SHA-256 matches the Microsoft WSL manifest. First-launch setup completed as nstr9; Docker WSL integration and the base environment check passed.
 - Local repositories initialized; remote publication has not occurred.
 
 ## AWS deployment blocker
@@ -42,7 +42,7 @@ References checked on 2026-11-19:
 ## Acceptance criteria
 
 ### 1. Local foundation
-- [ ] Ubuntu/WSL2, Python 3.12 and Docker work together.
+- [x] Ubuntu/WSL2, Python 3.12 and Docker work together; scripts/check-local-environment.sh passed as nstr9.
 - [ ] Record and pin project tool versions.
 - [ ] Verify commands from /mnt/d/CLOUD; document Windows-mounted filesystem tradeoffs.
 - [x] Separate platform, template and demo folders, with secret/state exclusions and LF line endings.
