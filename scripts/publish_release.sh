@@ -11,7 +11,7 @@ docker buildx imagetools create --tag "$tag" "$amd64" "$arm64"
 digest=$(docker buildx imagetools inspect "$tag" --format '{{.Manifest.Digest}}')
 [[ "$digest" =~ ^sha256:[a-f0-9]{64}$ ]]
 ref="$IMAGE_NAME@$digest"
-cosign sign --yes "$ref"
+cosign sign --yes --annotations "repository=$GITHUB_REPOSITORY" --annotations "ref=$GITHUB_REF" --annotations "commit=$GITHUB_SHA" "$ref"
 cosign verify "${verify[@]}" "$ref" > artifacts/index-verification.json
 cd artifacts/lambda
 sha256sum --check lambda.sha256

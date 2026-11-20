@@ -14,7 +14,7 @@ docker push "$tag"
 digest=$(docker buildx imagetools inspect "$tag" --format '{{.Manifest.Digest}}')
 [[ "$digest" =~ ^sha256:[a-f0-9]{64}$ ]]
 ref="$IMAGE_NAME@$digest"
-cosign sign --yes "$ref"
+cosign sign --yes --annotations "repository=$GITHUB_REPOSITORY" --annotations "ref=$GITHUB_REF" --annotations "commit=$GITHUB_SHA" "$ref"
 cosign attest --yes --type cyclonedx --predicate sbom.cdx.json "$ref"
 verify=(--certificate-identity "$SIGNER_IDENTITY" --certificate-oidc-issuer https://token.actions.githubusercontent.com --certificate-github-workflow-repository "$GITHUB_REPOSITORY" --certificate-github-workflow-sha "$GITHUB_SHA")
 cosign verify "${verify[@]}" "$ref" > signature-verification.json
