@@ -23,3 +23,6 @@ tfplan.json
 !*.tfvars.example
 crash.log
 # Commit .terraform.lock.hcl deliberately.
+
+# Generated non-deployable infrastructure test ZIP
+modules/serverless-service/tests/fixture.zip

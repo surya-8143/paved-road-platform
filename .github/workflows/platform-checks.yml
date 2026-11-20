@@ -18,13 +18,17 @@ jobs:
           persist-credentials: false
       - name: Install pinned tools
         run: |
-          python3 scripts/install_tools.py actionlint trivy
+          python3 scripts/install_tools.py actionlint trivy conftest tofu
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Validate workflow and helper behavior
         run: |
           actionlint
           python3 -m unittest discover -s tests -v
           bash -n scripts/*.sh
+      - name: Validate infrastructure without AWS access
+        run: |
+          bash scripts/check_infrastructure.sh
+          python3 scripts/check_plan.py build/offline-plan.json
       - name: Prove a real vulnerability blocks the gate
         run: |
           if python3 scripts/scan_artifact.py fs tests/fixtures/vulnerable build/negative-scan; then

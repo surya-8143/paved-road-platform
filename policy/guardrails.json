@@ -1,0 +1,10 @@
+{
+  "guardrails": {
+    "max_functions": 2,
+    "max_read_capacity": 5,
+    "max_write_capacity": 5,
+    "max_alarms": 4,
+    "public_exceptions": {},
+    "approved_module_sha256": "178b8cbbaacb03748ee26d4cdd1a686175f8748fed2a6cd6ddf2b13f67d08212"
+  }
+}
