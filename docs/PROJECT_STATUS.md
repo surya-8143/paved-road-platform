@@ -1,106 +1,60 @@
 # Project status
 
-Updated: 2026-11-19 (Asia/Kolkata).
+Updated: 2026-11-20 (Asia/Kolkata).
 
-## Objective and constraints
+**The complete project is not finished.** Public CI/release signing, offline infrastructure policy and local GitOps/admission are implemented and tested. Live AWS deployment, account-level operations and teardown remain unverified. The personal managed Free Plan account blocks IAM identity-provider setup; the college AWS Academy Learner Lab is confirmed, with IAM capabilities still being checked. No account upgrade or AWS deployment has been performed.
 
-Complete the full Paved Road project: shared pipelines, AWS Lambda/DynamoDB deployment, local Kubernetes/GitOps enforcement, operations, a second service and measured demonstration evidence.
+## Constraints
 
-- Owner: surya-8143.
-- Workspace: D:\CLOUD. Preserve unrelated projects.
-- No deadline; correctness and understanding take priority.
-- Spending assumption: INR 0 until the user explicitly chooses otherwise.
-- Do not store passwords, AWS access keys, session tokens, state or credentials in Git.
-- Treat the supplied implementation PDF as a design reference requiring corrections.
-- Do not claim zero usage cost when promotional credits merely offset a charge.
+- Owner: surya-8143; workspace D:\CLOUD. Preserve unrelated work and Docker containers.
+- Spending authorization remains INR 0. Promotional credits are not evidence of zero resource cost.
+- Never put passwords, access tokens, credentials or state in Git.
+- The supplied implementation PDF is a design reference; defects are corrected using executable checks and primary documentation.
 
-## Verified setup
+## Completed with evidence
 
-- Git 2.52.0.windows.1 and GitHub CLI 2.96.0 are installed.
-- GitHub CLI is signed in as surya-8143.
-- VS Code and AWS CLI 2.38.1 are installed.
-- Windows Python is 3.11.9; project runtime target is Python 3.12.
-- WSL2 is installed. Initially only docker-desktop was registered.
-- Docker Linux engine 29.6.1 responds, with approximately 8 GB available to the engine.
-- Docker hello-world download/execution test passed. Existing unrelated Docker containers must be preserved.
-- Ubuntu 24.04.5 installed successfully under D:\CLOUD\.local\wsl\Ubuntu-24.04. The image SHA-256 matches the Microsoft WSL manifest. First-launch setup completed as nstr9; Docker WSL integration and the base environment check passed.
-- Local repositories initialized; remote publication has not occurred.
+| Area | Result |
+| --- | --- |
+| Foundation | Ubuntu 24.04/WSL2, Python 3.12 and Docker work; tools, Actions, images, chart and manifests pinned/checksummed |
+| Repositories | Public platform, template and generated demo service repositories; template marked as a GitHub template |
+| Service | 20 tests; 100% measured coverage of the current application; non-root/read-only container HTTP smoke and isolated Lambda package smoke |
+| Packaging | Identical ZIP SHA-256 across separate local environments and hosted CI |
+| Supply chain | Native AMD64/ARM64 build and scan, exact scanned-image publication, keyless signatures, SBOM attestations, signed ZIP and release manifest, independent verification |
+| Negative gates | Real vulnerable dependencies blocked publication; empty scanner inventory also blocked release |
+| Infrastructure | OpenTofu format/validate, 3 mocked service-module tests, real offline plan, 18 policy checks; 18 platform unit/regression tests |
+| Policy scope | Nested/unchanged resources, create-before-destroy peaks, other-stack capacity, critical unknowns, expired public exceptions and URL/function matching |
+| Second service | Generated through GitHub template API; first full successful CI run elapsed 221 seconds (not total onboarding time) |
+| GitOps | Argo CD reconciles the public demo GitOps path; application reached Synced/Healthy with an immutable signed image |
+| Admission | 15 live server-dry-run cases, including real unsigned/wrong-signer registry images, unsafe configs and init containers |
+| Recovery | 7 live checks: ephemeral-container denial, automatic drift repair, zero-scale/deletion guard, actual webhook outage rejection and recovery, HTTP smoke |
 
-## AWS deployment blocker
+Raw local admission/recovery evidence is tracked under `docs/evidence/`; full build/scan artifacts are linked from [supply-chain evidence](SUPPLY_CHAIN_EVIDENCE.md). [Kubernetes runbook](KUBERNETES.md) documents the shutdown gap discovered and the independent native admission guard added for it.
 
-The account was created on 2026-11-19 through the new AWS Builder ID/project-account signup.
-The user's console shows Free Plan, USD 100 credits, and 182 days remaining.
+## Remaining acceptance work
 
-AWS's published managed project policies deny IAM identity-provider operations. The intended GitHub OIDC bootstrap therefore requires a compatible account configuration. Do not upgrade or activate advanced features automatically. AWS documents that advanced activation requires Paid Plan and cannot be reverted to Free Plan.
+- [ ] Finish and record clean-checkout cluster recreation; repeat admission/recovery checks on the new node.
+- [ ] Resolve AWS account compatibility without assuming that a college lab permits IAM/OIDC administration.
+- [ ] Bootstrap scoped roles, boundaries, GitHub OIDC trust and versioned/encrypted state storage in a compatible account.
+- [ ] Verify the actual GitHub OIDC subject, including immutable repository/owner IDs; test rejected repository/branch contexts.
+- [ ] Add and execute cloud deployment with fresh account inventory, exact saved-plan application and verified matching release package.
+- [ ] Verify concurrency quotas, live DynamoDB writes, authenticated endpoint, temporary reviewed public exception and authentication restoration.
+- [ ] Implement/execute cloud drift, usage and charge/credit monitoring; do not treat budget alerts as a spending cap.
+- [ ] Test service teardown before bootstrap teardown; audit remaining resources and object versions before deleting state storage.
+- [x] Retain signed release archives and scan reports in public supply-chain prereleases.
+- [ ] Finish the demo recording and verify resume claims against measured results.
 
-References checked on 2026-11-19:
-- https://docs.aws.amazon.com/accounts/latest/reference/scps-and-rcps-for-projects.html
-- https://docs.aws.amazon.com/accounts/latest/reference/sign-up-for-aws.html
-- https://aws.amazon.com/resources/create-account/
-- https://aws.amazon.com/free/free-tier-faqs/
+## Honest limits
 
-## Acceptance criteria
+The offline checker resolves one provider-computed DynamoDB index field using a reviewed source fingerprint; this is not online-deployment approval or account inventory. AWS is still the main blocker to claiming a complete cloud project. Local kind uses a single node and does not enforce NetworkPolicy. Application counters are in memory in Kubernetes. Admission/signatures do not make the application production-ready or guarantee future vulnerability results.
 
-### 1. Local foundation
-- [x] Ubuntu/WSL2, Python 3.12 and Docker work together; scripts/check-local-environment.sh passed as nstr9.
-- [ ] Record and pin project tool versions.
-- [ ] Verify commands from /mnt/d/CLOUD; document Windows-mounted filesystem tradeoffs.
-- [x] Separate platform, template and demo folders, with secret/state exclusions and LF line endings.
-- [x] Public repositories selected with user authorization. Publication awaits a useful initial implementation.
+## Account evidence
 
-### 2. Service and supply chain
-- [x] Tests cover memory storage, stubbed DynamoDB behavior and Lambda HTTP event handling: 20 tests passed locally.
-- [x] Container works as non-root with a read-only root filesystem; HTTP smoke test passed.
-- [ ] Scan every released architecture; sign the exact scanned digest.
-- [ ] Associate SBOMs with the correct artifact digest.
-- [ ] Scan the actual Lambda package and its locked dependencies.
-- [ ] A failing security gate prevents deployment.
-- [x] Packaging identical locked inputs produced identical ZIP hashes in two separate Python 3.12 virtual environments. Clean, network-disabled package smoke test passed.
+The console supplied by the owner showed the new Builder ID managed project experience, Free Plan, USD 100 credits and 182 days remaining. Email login alone does not establish that the session is an AWS root identity.
 
-### 3. Infrastructure and policy
-- [ ] Format, validate, plan offline and unit-test policies without AWS credentials.
-- [ ] Fix the oversized-Lambda test fixture, which drops change.actions in the PDF.
-- [ ] Enforce resource types, tags, runtime limits, database capacity and log retention.
-- [ ] Include unchanged stack resources when calculating limits; account separately for other stacks.
-- [ ] Reject or explicitly handle security-critical unknown values. Re-reading a saved plan does not resolve unknowns.
-- [ ] Match public URLs to their own functions; cover URL-only updates and multi-function plans.
-- [ ] Describe cost estimates and budget alerts accurately; neither guarantees a spending ceiling.
+AWS documents restrictions on identity-provider operations for this account configuration and a separate advanced activation path. Activating advanced features requires a paid-plan decision; it must not be done automatically. Recheck effective policies after any authorized account change rather than assuming all restrictions disappear.
 
-### 4. AWS deployment
-- [ ] Resolve the account restriction through an explicit user decision.
-- [ ] Match actual GitHub OIDC subjects, including immutable IDs where applicable.
-- [ ] Reject unauthorized repositories and deployment contexts.
-- [ ] Make deployment depend on all required tests and security/policy checks.
-- [ ] Apply the reviewed saved plan and matching package; verify artifact paths and hashes.
-- [ ] Constrain IAM role creation and policy changes using permissions boundaries.
-- [ ] Demonstrate authenticated endpoint, reviewed public exception and restoration of authentication.
+- [Managed project policies](https://docs.aws.amazon.com/accounts/latest/reference/scps-and-rcps-for-projects.html)
+- [Compare sign-up options](https://docs.aws.amazon.com/accounts/latest/reference/sign-up-for-aws.html)
+- [GitHub OIDC subject formats](https://docs.github.com/en/actions/reference/security/oidc)
 
-### 5. Kubernetes/GitOps
-- [ ] Pin compatible kind, Kubernetes, Argo CD, Kyverno and cosign versions.
-- [ ] Accept trusted signed digests; reject unsigned and wrong-signer images.
-- [ ] Reject images outside the approved registry scope, unpinned images and unsafe pod configurations.
-- [ ] Cover init containers and other applicable container paths.
-- [ ] Demonstrate drift repair and clean cluster recreation.
-
-### 6. Operations and cleanup
-- [ ] Verify drift and usage monitors, including error handling.
-- [ ] Test service teardown and final bootstrap teardown separately.
-- [ ] Keep the state backend until dependent service destruction completes.
-- [ ] Audit real remaining resources and retained object versions; a tag query is not exhaustive.
-- [ ] Record charges and credit consumption separately.
-
-### 7. Final evidence
-- [ ] Onboard a second service from the template.
-- [ ] Run all documented negative cases and successful deployment paths.
-- [ ] Measure onboarding/pipeline durations and retain raw evidence.
-- [ ] Complete architecture decisions, threat model, runbooks and demo recording.
-- [ ] Verify a clean-clone reproduction and only use measured resume claims.
-
-## Review status
-
-The PDF defects above are static-review findings, not yet executed regression tests.
-Still requiring version-specific validation: Kyverno schema and signature formats, action inputs and SHAs, AWS provider arguments, Free Tier API output and exact account permissions.
-
-## Service foundation checkpoint
-
-Implemented in paved-road-template; see its docs/VERIFICATION.md for measured results and limitations. The demo consumer is still a reserved repository. No service has been published to GitHub or deployed to AWS.
+The college screenshots confirm AWS Academy Learner Lab, a USD 50 budget limit (remaining balance not shown), a voclabs role session and us-east-1. This establishes lab type, not permission to create roles or OIDC providers. The lab instructions must be checked before selecting an AWS deployment path.

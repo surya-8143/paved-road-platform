@@ -129,8 +129,21 @@ try:
 finally:
     set_controller(original_template, original_strategy)
     run("rollout", "status", "deployment/kyverno-admission-controller", "-n", "kyverno", "--timeout=180s", timeout=190)
-run("create", "--dry-run=server", "-f", "-", payload=probe)
-record("webhook-restored-allows-trusted-pod", replicas=controller["spec"]["replicas"])
+# Deployment availability can precede service routing convergence. Retry only
+# transport failures for a bounded period; policy denials still fail immediately.
+recovery_attempts = []
+def admission_restored():
+    result = run("create", "--dry-run=server", "-f", "-", payload=probe, check=False)
+    if result.returncode == 0:
+        return True
+    transport_failure = "failed calling webhook" in result.stderr and any(
+        reason in result.stderr for reason in ("connect: connection refused", "no endpoints available", "i/o timeout", "context deadline exceeded"))
+    if not transport_failure:
+        raise RuntimeError(result.stderr)
+    recovery_attempts.append(result.stderr)
+    return False
+wait_for(admission_restored, 120)
+record("webhook-restored-allows-trusted-pod", replicas=controller["spec"]["replicas"], transient_transport_failures=recovery_attempts)
 
 # Loopback-only access, no externally exposed Service or ingress.
 with socket.socket() as listener:

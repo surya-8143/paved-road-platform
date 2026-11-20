@@ -29,3 +29,27 @@ The signing identity includes both the pinned platform workflow and the caller r
 - A deliberately vulnerable Django/Jinja2 fixture is scanned in platform CI and must fail with an actual HIGH/CRITICAL finding: [passed negative test](https://github.com/surya-8143/paved-road-platform/actions/runs/44573325192).
 
 Scanner databases change. These results apply to the recorded builds and database timestamps, not every future rebuild. GitHub artifacts have finite retention. A signature proves identity/integrity; it does not certify software safety or establish a SLSA level.
+
+## Repository-bound release used by Kubernetes
+
+The shared workflow now signs repository/main-branch annotations on each child image and the multiarchitecture index. Kyverno verifies those signed annotations together with the exact reusable-workflow certificate identity.
+
+- Approved reusable-workflow SHA: `ae9fce4325796a513e52492e0bf4850948108b6a`.
+- [Demo release run](https://github.com/surya-8143/paved-road-demo-service/actions/runs/44691820011), source `d6f8381c057d2e03260595265eefb146d848ea6c`.
+- Demo index: `ghcr.io/surya-8143/paved-road-demo-service@sha256:4a7ed1dabc8e3ff651cd88b6eec2aaebcb937705805113cdfcdf3f2b2fef6a70`.
+- AMD64: `sha256:ad9fbc6e0b30b063f2ee7903c661c83fdccb2c76d3f0d279a719b1295f2445f2`.
+- ARM64: `sha256:4174010df178901c441488f6d2eeeca206152c368fc177e0ae72e422b79c6cde`.
+- Lambda ZIP retains the deterministic SHA-256 recorded above. The independent release verifier passed again.
+- [Matching template run](https://github.com/surya-8143/paved-road-template/actions/runs/44691811051) also passed.
+- [Admission fixture run](https://github.com/surya-8143/paved-road-demo-service/actions/runs/44660420658) publishes inert unsigned and wrong-workflow-signed images in the same approved demo registry repository. Both are rejected by real admission tests.
+
+The demo GitOps promotion at `225ec909a1b96f5071dd4c1dbc86c40bbff256d4` changes the deployment manifest only. Source-code release SHA and deployment-manifest SHA are distinct and recorded separately. GitOps-only changes do not rebuild a release and trigger an endless promotion loop.
+
+## Retained artifacts
+
+The verified bytes and scan reports are retained in public prereleases, independent of Actions artifact expiry:
+
+- [Template supply-chain checkpoint](https://github.com/surya-8143/paved-road-template/releases/tag/v0.1.0-supply-chain)
+- [Demo supply-chain checkpoint](https://github.com/surya-8143/paved-road-demo-service/releases/tag/v0.1.0-supply-chain)
+
+Each contains `verified-release.tar.gz` and `SHA256SUMS`. Extract with a path-safe extractor and use `scripts/verify_release.py` with the repository/source/workflow pins above. The outer checksum detects download corruption; the embedded Sigstore bundles and signed manifest establish release identity and integrity. These are engineering prereleases, not completed AWS deployments.

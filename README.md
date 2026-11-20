@@ -2,13 +2,13 @@
 
 A small platform-engineering project for reproducible Python services, reviewed AWS serverless infrastructure, and local Kubernetes admission controls.
 
-**Status: implementation in progress.** The service foundation is tested locally. The reusable supply-chain pipeline is implemented; its first hosted execution is being verified. AWS deployment is blocked by IAM restrictions on the owner's managed Free Plan project account. No live AWS deployment, zero-cost guarantee, or production-readiness claim is made.
+**Status: implementation in progress.** The public supply-chain pipeline has passed for two service repositories. Offline infrastructure policies and local Argo CD/Kyverno admission and recovery checks are verified. AWS deployment is blocked by IAM restrictions on the owner's managed Free Plan project account. No live AWS deployment, zero-cost guarantee, or production-readiness claim is made.
 
 ## Repositories
 
 - [Platform](https://github.com/surya-8143/paved-road-platform): shared CI, policy, infrastructure modules, operational scripts, and evidence.
 - [Service template](https://github.com/surya-8143/paved-road-template): FastAPI, Lambda packaging, container, and service tests.
-- Demo service: to be generated from the verified template.
+- [Generated demo service](https://github.com/surya-8143/paved-road-demo-service): signed multiarchitecture release and digest-pinned GitOps deployment.
 
 ## Supply-chain workflow
 
@@ -45,6 +45,6 @@ The fixture intentionally pins an old Django and Jinja2 versions. It is never in
 
 Vulnerability results reflect the database available at scan time; a signature authenticates an artifact and signer, not its safety. Pinning reduces accidental change but requires deliberate updates. Public CI logs, signatures, and transparency-log entries disclose repository and build identity. GitHub's standard runners are free for public repositories; artifacts have short retention and are not permanent release storage.
 
-See [project status](docs/PROJECT_STATUS.md), [local setup](docs/LOCAL_SETUP.md), and [version record](docs/VERSIONS.md). Infrastructure policy, AWS deployment, GitOps, recovery drills, and final measured portfolio evidence remain on the acceptance checklist.
+See [project status](docs/PROJECT_STATUS.md), [local setup](docs/LOCAL_SETUP.md), and [version record](docs/VERSIONS.md). The [Kubernetes runbook](docs/KUBERNETES.md) covers setup, live enforcement checks and recovery. AWS deployment, account-level operations and final portfolio evidence remain on the acceptance checklist.
 
 Licensed under Apache-2.0.

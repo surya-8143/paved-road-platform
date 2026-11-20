@@ -1,0 +1,57 @@
+{
+  "timestamp": "2026-11-20T13:55:03.395376+00:00",
+  "checks": [
+    {
+      "case": "ephemeral-subresource-denied",
+      "passed": true,
+      "response": "Error from server: admission webhook \"vpol.validate.kyverno.svc-fail-finegrained-paved-road-runtime\" denied the request: Policy paved-road-runtime failed: Ephemeral debug containers are disabled in this demo profile; use reviewed exec access.\n"
+    },
+    {
+      "case": "argocd-self-heal",
+      "passed": true,
+      "introduced_replicas": 2,
+      "restored_replicas": 1,
+      "seconds": 12.407,
+      "introduced_resource_version": "36149",
+      "restored_resource_version": "36184"
+    },
+    {
+      "case": "scale-to-zero-denied",
+      "passed": true,
+      "response": "The deployments \"kyverno-admission-controller\" is invalid: : ValidatingAdmissionPolicy 'paved-road-admission-availability' with binding 'paved-road-admission-availability' denied request: Keep at least one Kyverno admission replica; remove the availability binding explicitly before intentional uninstall.\n"
+    },
+    {
+      "case": "controller-deletion-denied",
+      "passed": true,
+      "response": "The deployments \"kyverno-admission-controller\" is invalid: : ValidatingAdmissionPolicy 'paved-road-admission-availability' with binding 'paved-road-admission-availability' denied request: Keep at least one Kyverno admission replica; remove the availability binding explicitly before intentional uninstall.\n"
+    },
+    {
+      "case": "webhook-outage-fails-closed",
+      "passed": true,
+      "response": "Error from server (InternalError): error when creating \"STDIN\": Internal error occurred: failed calling webhook \"ivpol.validate.kyverno.svc-fail-finegrained-paved-road-trusted-builds\": failed to call webhook: Post \"https://kyverno-svc.kyverno.svc:443/ivpol/validate/paved-road-trusted-builds?timeout=30s\": dial tcp 10.96.100.81:443: connect: connection refused\n",
+      "webhook_uid": "26f9d6b4-e8e7-42f3-bb72-b56e9581080d"
+    },
+    {
+      "case": "webhook-restored-allows-trusted-pod",
+      "passed": true,
+      "replicas": 1,
+      "transient_transport_failures": []
+    },
+    {
+      "case": "service-http-smoke",
+      "passed": true,
+      "health": {
+        "status": "ok",
+        "uptime_s": 114.9
+      },
+      "greeting": {
+        "message": "Hello, Surya!"
+      },
+      "first_hits": 1,
+      "second_hits": 2
+    }
+  ],
+  "node_uid": "3d52cbde-745b-4642-bae1-5b3d8865abe5",
+  "git_revision": "225ec909a1b96f5071dd4c1dbc86c40bbff256d4",
+  "image": "ghcr.io/surya-8143/paved-road-demo-service@sha256:4a7ed1dabc8e3ff651cd88b6eec2aaebcb937705805113cdfcdf3f2b2fef6a70"
+}

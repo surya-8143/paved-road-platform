@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-11-20T07:27:41.846773+00:00",
+  "platform_commit": "384190a81887780ad7c700005fbdcab2a29c69a3",
+  "old_node_uid": "c238d660-edf4-4336-be16-c23e096df098",
+  "other_container_count": 21,
+  "passed": false,
+  "rebuild_seconds": 717.615,
+  "new_node_uid": "3d52cbde-745b-4642-bae1-5b3d8865abe5"
+}
