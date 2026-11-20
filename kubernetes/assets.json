@@ -1,0 +1,10 @@
+{
+  "kyverno-3.10.0.tgz": {
+    "url": "https://github.com/kyverno/kyverno/releases/download/v1.20.0/kyverno-3.10.0.tgz",
+    "sha256": "55961392dc0821eb367323f0e9585c061dd4407ef7ada921bd56ea1642c2a301"
+  },
+  "argocd-install.yaml": {
+    "url": "https://raw.githubusercontent.com/argoproj/argo-cd/8e8268ef2f3df99ca95663f5080fa6056f156805/manifests/install.yaml",
+    "sha256": "c948064d38294d857712ef78444768749a14293613098932f8533e37d067a2a2"
+  }
+}

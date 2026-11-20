@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: paved-road
+  namespace: argocd
+spec:
+  description: One demo repository and one bounded application namespace.
+  sourceRepos:
+    - https://github.com/surya-8143/paved-road-demo-service.git
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: paved-road-demo
+  clusterResourceWhitelist: []
+  namespaceResourceWhitelist:
+    - group: apps
+      kind: Deployment
+    - group: ""
+      kind: Service
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: paved-road-demo
+  namespace: argocd
+spec:
+  project: paved-road
+  source:
+    repoURL: https://github.com/surya-8143/paved-road-demo-service.git
+    targetRevision: main
+    path: gitops
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: paved-road-demo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    retry:
+      limit: 3
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 1m

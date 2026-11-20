@@ -28,5 +28,23 @@
     "sha256": "bc0fc726e017b8927a62b2d3531d7a84ee01769daf5c99ed866dced54089fdbf",
     "member": "trivy",
     "url": "https://github.com/aquasecurity/trivy/releases/download/v0.76.2/trivy_0.76.2_Linux-64bit.tar.gz"
+  },
+  "kind": {
+    "member": "",
+    "version": "v0.33.0",
+    "sha256": "aee6151561422756b764a4ae28e7f44cda5af5a9eead3cc9985112b1de8d8e0d",
+    "url": "https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64"
+  },
+  "kubectl": {
+    "member": "",
+    "version": "v1.35.8",
+    "sha256": "874d5e72dbb819f43cff16bcd1e4f8bac5b7f2361fe1e55049b0a6c676fb0cbf",
+    "url": "https://dl.k8s.io/release/v1.35.8/bin/linux/amd64/kubectl"
+  },
+  "helm": {
+    "member": "linux-amd64/helm",
+    "version": "v4.3.2",
+    "sha256": "d1c0278d46beab79582d7e50f5b3dc206944ba8e577cde618513fd07daa53983",
+    "url": "https://get.helm.sh/helm-v4.3.2-linux-amd64.tar.gz"
   }
 }
