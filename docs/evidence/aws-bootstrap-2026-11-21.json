@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-21T01:18:44.965055+00:00",
+  "plan_sha256": "fc478bac65b76ec44f409a89e87308ed97e9e336e7c29b1ca7f578762cd8aaa4",
+  "region": "ap-southeast-2",
+  "action": "bootstrap-apply",
+  "source_sha256": "2cd75fbcf5d9c9106320f7c0cfc8749bcd15aff05ef4eb5af910fd5a9908a73e",
+  "passed": true,
+  "managed_resources_created": 13,
+  "federation_enabled": false,
+  "plan_type": "FREE"
+}

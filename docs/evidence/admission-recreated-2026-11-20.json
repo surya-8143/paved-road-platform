@@ -1,0 +1,112 @@
+{
+  "timestamp": "2026-11-20T14:09:17.031241+00:00",
+  "image": "ghcr.io/surya-8143/paved-road-demo-service@sha256:4a7ed1dabc8e3ff651cd88b6eec2aaebcb937705805113cdfcdf3f2b2fef6a70",
+  "source_commit": "d6f8381c057d2e03260595265eefb146d848ea6c",
+  "results": [
+    {
+      "case": "trusted-signed",
+      "expected": "allow",
+      "passed": true,
+      "returncode": 0,
+      "response": "{\n    \"apiVersion\": \"v1\",\n    \"kind\": \"Pod\",\n    \"metadata\": {\n        \"creationTimestamp\": \"2026-11-20T14:08:55Z\",\n        \"generation\": 1,\n        \"name\": \"check-trusted-signed\",\n        \"namespace\": \"paved-road-demo\",\n        \"uid\": \"affcbd99-261c-4af7-ad39-b74525a2312e\"\n    },\n    \"spec\": {\n        \"automountServiceAccountToken\": false,\n        \"containers\": [\n            {\n                \"image\": \"ghcr.io/surya-8143/paved-road-demo-service@sha256:4a7ed1dabc8e3ff651cd88b6eec2aaebcb937705805113cdfcdf3f2b2fef6a70\",\n                \"imagePullPolicy\": \"IfNotPresent\",\n                \"name\": \"app\",\n                \"resources\": {\n                    \"limits\": {\n                        \"cpu\": \"500m\",\n                        \"memory\": \"256Mi\"\n                    },\n                    \"requests\": {\n                        \"cpu\": \"100m\",\n                        \"memory\": \"128Mi\"\n                    }\n                },\n                \"securityContext\": {\n                    \"allowPrivilegeEscalation\": false,\n                    \"capabilities\": {\n                        \"drop\": [\n                            \"ALL\"\n                        ]\n                    },\n                    \"readOnlyRootFilesystem\": true\n                },\n                \"terminationMessagePath\": \"/dev/termination-log\",\n                \"terminationMessagePolicy\": \"File\"\n            }\n        ],\n        \"dnsPolicy\": \"ClusterFirst\",\n        \"enableServiceLinks\": true,\n        \"preemptionPolicy\": \"PreemptLowerPriority\",\n        \"priority\": 0,\n        \"restartPolicy\": \"Never\",\n        \"schedulerName\": \"default-scheduler\",\n        \"securityContext\": {\n            \"runAsGroup\": 10001,\n            \"runAsNonRoot\": true,\n            \"runAsUser\": 10001,\n            \"seccompProfile\": {\n                \"type\": \"RuntimeDefault\"\n            }\n        },\n        \"serviceAccount\": \"default\",\n        \"serviceAccountName\": \"default\",\n        \"terminationGracePeriodSeconds\": 30,\n        \"tolerations\": [\n            {\n                \"effect\": \"NoExecute\",\n                \"key\": \"node.kubernetes.io/not-ready\",\n                \"operator\": \"Exists\",\n                \"tolerationSeconds\": 300\n            },\n            {\n                \"effect\": \"NoExecute\",\n                \"key\": \"node.kubernetes.io/unreachable\",\n                \"operator\": \"Exists\",\n                \"tolerationSeconds\": 300\n            }\n        ]\n    },\n    \"status\": {\n        \"phase\": \"Pending\",\n        \"qosClass\": \"Burstable\"\n    }\n}\n"
+    },
+    {
+      "case": "unsigned",
+      "expected": "deny",
+      "passed": true,
+      "returncode": 1,
+      "response": "Error from server: error when creating \"STDIN\": admission webhook \"ivpol.validate.kyverno.svc-fail-finegrained-paved-road-trusted-builds\" denied the request: Policy paved-road-trusted-builds failed: Images must be signed by the pinned platform workflow with matching repository and main-branch claims.; verification details: image \"ghcr.io/surya-8143/paved-road-demo-service@sha256:e61d3ed25b8a5841c3e5358665b183629bdcd2770a62e5c39d0ad3eca839d52e\", attestor \"demo\": failed to verify cosign signatures: no signatures found\n"
+    },
+    {
+      "case": "wrong-signer",
+      "expected": "deny",
+      "passed": true,
+      "returncode": 1,
+      "response": "Error from server: error when creating \"STDIN\": admission webhook \"ivpol.validate.kyverno.svc-fail-finegrained-paved-road-trusted-builds\" denied the request: Policy paved-road-trusted-builds failed: Images must be signed by the pinned platform workflow with matching repository and main-branch claims.; verification details: image \"ghcr.io/surya-8143/paved-road-demo-service@sha256:36ba77a2f84eaa93dc4cda357a8d84b49019398a47b91e4efbe4ea3f94c999a1\", attestor \"demo\": failed to verify cosign signatures: no matching attestations: failed to verify certificate identity: no matching CertificateIdentity found, last error: expected SAN value \"https://github.com/surya-8143/paved-road-platform/.github/workflows/build-scan-sign.yml@ae9fce4325796a513e52492e0bf4850948108b6a\", got \"https://github.com/surya-8143/paved-road-demo-service/.github/workflows/admission-fixtures.yml@refs/heads/main\"\n"
+    },
+    {
+      "case": "mutable-tag",
+      "expected": "deny",
+      "passed": true,
+      "returncode": 1,
+      "response": "Error from server: error when creating \"STDIN\": admission webhook \"vpol.validate.kyverno.svc-fail-finegrained-paved-road-runtime\" denied the request: Policy paved-road-runtime failed: Every container and init container must use an approved repository and immutable SHA-256 digest.\n"
+    },
+    {
+      "case": "outside-registry",
+      "expected": "deny",
+      "passed": true,
+      "returncode": 1,
+      "response": "Error from server: error when creating \"STDIN\": admission webhook \"vpol.validate.kyverno.svc-fail-finegrained-paved-road-runtime\" denied the request: Policy paved-road-runtime failed: Every container and init container must use an approved repository and immutable SHA-256 digest.\n"
+    },
+    {
+      "case": "root-user",
+      "expected": "deny",
+      "passed": true,
+      "returncode": 1,
+      "response": "Error from server (Forbidden): error when creating \"STDIN\": pods \"check-root-user\" is forbidden: violates PodSecurity \"restricted:v1.35\": runAsUser=0 (pod must not set runAsUser=0)\n"
+    },
+    {
+      "case": "host-network",
+      "expected": "deny",
+      "passed": true,
+      "returncode": 1,
+      "response": "Error from server (Forbidden): error when creating \"STDIN\": pods \"check-host-network\" is forbidden: violates PodSecurity \"restricted:v1.35\": host namespaces (hostNetwork=true)\n"
+    },
+    {
+      "case": "privilege-escalation",
+      "expected": "deny",
+      "passed": true,
+      "returncode": 1,
+      "response": "Error from server (Forbidden): error when creating \"STDIN\": pods \"check-privilege-escalation\" is forbidden: violates PodSecurity \"restricted:v1.35\": allowPrivilegeEscalation != false (container \"app\" must set securityContext.allowPrivilegeEscalation=false)\n"
+    },
+    {
+      "case": "writable-rootfs",
+      "expected": "deny",
+      "passed": true,
+      "returncode": 1,
+      "response": "Error from server: error when creating \"STDIN\": admission webhook \"vpol.validate.kyverno.svc-fail-finegrained-paved-road-runtime\" denied the request: Policy paved-road-runtime failed: Containers require a read-only filesystem, no privilege escalation, and all capabilities dropped.\n"
+    },
+    {
+      "case": "service-account-token",
+      "expected": "deny",
+      "passed": true,
+      "returncode": 1,
+      "response": "Error from server: error when creating \"STDIN\": admission webhook \"vpol.validate.kyverno.svc-fail-finegrained-paved-road-runtime\" denied the request: Policy paved-road-runtime failed: The demo service must not mount a Kubernetes API token.\n"
+    },
+    {
+      "case": "unbounded-cpu",
+      "expected": "deny",
+      "passed": true,
+      "returncode": 1,
+      "response": "Error from server: error when creating \"STDIN\": admission webhook \"vpol.validate.kyverno.svc-fail-finegrained-paved-road-runtime\" denied the request: Policy paved-road-runtime failed: Set positive CPU requests/limits in whole cores or millicores and memory in Mi/Gi.\n"
+    },
+    {
+      "case": "trusted-init",
+      "expected": "allow",
+      "passed": true,
+      "returncode": 0,
+      "response": "{\n    \"apiVersion\": \"v1\",\n    \"kind\": \"Pod\",\n    \"metadata\": {\n        \"creationTimestamp\": \"2026-11-20T14:09:10Z\",\n        \"generation\": 1,\n        \"name\": \"check-trusted-init\",\n        \"namespace\": \"paved-road-demo\",\n        \"uid\": \"f54725f9-aa09-461e-981f-fcaf528771b4\"\n    },\n    \"spec\": {\n        \"automountServiceAccountToken\": false,\n        \"containers\": [\n            {\n                \"image\": \"ghcr.io/surya-8143/paved-road-demo-service@sha256:4a7ed1dabc8e3ff651cd88b6eec2aaebcb937705805113cdfcdf3f2b2fef6a70\",\n                \"imagePullPolicy\": \"IfNotPresent\",\n                \"name\": \"app\",\n                \"resources\": {\n                    \"limits\": {\n                        \"cpu\": \"500m\",\n                        \"memory\": \"256Mi\"\n                    },\n                    \"requests\": {\n                        \"cpu\": \"100m\",\n                        \"memory\": \"128Mi\"\n                    }\n                },\n                \"securityContext\": {\n                    \"allowPrivilegeEscalation\": false,\n                    \"capabilities\": {\n                        \"drop\": [\n                            \"ALL\"\n                        ]\n                    },\n                    \"readOnlyRootFilesystem\": true\n                },\n                \"terminationMessagePath\": \"/dev/termination-log\",\n                \"terminationMessagePolicy\": \"File\"\n            }\n        ],\n        \"dnsPolicy\": \"ClusterFirst\",\n        \"enableServiceLinks\": true,\n        \"initContainers\": [\n            {\n                \"command\": [\n                    \"python\",\n                    \"-c\",\n                    \"pass\"\n                ],\n                \"image\": \"ghcr.io/surya-8143/paved-road-demo-service@sha256:4a7ed1dabc8e3ff651cd88b6eec2aaebcb937705805113cdfcdf3f2b2fef6a70\",\n                \"imagePullPolicy\": \"IfNotPresent\",\n                \"name\": \"init\",\n                \"resources\": {\n                    \"limits\": {\n                        \"cpu\": \"500m\",\n                        \"memory\": \"256Mi\"\n                    },\n                    \"requests\": {\n                        \"cpu\": \"100m\",\n                        \"memory\": \"128Mi\"\n                    }\n                },\n                \"securityContext\": {\n                    \"allowPrivilegeEscalation\": false,\n                    \"capabilities\": {\n                        \"drop\": [\n                            \"ALL\"\n                        ]\n                    },\n                    \"readOnlyRootFilesystem\": true\n                },\n                \"terminationMessagePath\": \"/dev/termination-log\",\n                \"terminationMessagePolicy\": \"File\"\n            }\n        ],\n        \"preemptionPolicy\": \"PreemptLowerPriority\",\n        \"priority\": 0,\n        \"restartPolicy\": \"Never\",\n        \"schedulerName\": \"default-scheduler\",\n        \"securityContext\": {\n            \"runAsGroup\": 10001,\n            \"runAsNonRoot\": true,\n            \"runAsUser\": 10001,\n            \"seccompProfile\": {\n                \"type\": \"RuntimeDefault\"\n            }\n        },\n        \"serviceAccount\": \"default\",\n        \"serviceAccountName\": \"default\",\n        \"terminationGracePeriodSeconds\": 30,\n        \"tolerations\": [\n            {\n                \"effect\": \"NoExecute\",\n                \"key\": \"node.kubernetes.io/not-ready\",\n                \"operator\": \"Exists\",\n                \"tolerationSeconds\": 300\n            },\n            {\n                \"effect\": \"NoExecute\",\n                \"key\": \"node.kubernetes.io/unreachable\",\n                \"operator\": \"Exists\",\n                \"tolerationSeconds\": 300\n            }\n        ]\n    },\n    \"status\": {\n        \"phase\": \"Pending\",\n        \"qosClass\": \"Burstable\"\n    }\n}\n"
+    },
+    {
+      "case": "unsigned-init",
+      "expected": "deny",
+      "passed": true,
+      "returncode": 1,
+      "response": "Error from server: error when creating \"STDIN\": admission webhook \"ivpol.validate.kyverno.svc-fail-finegrained-paved-road-trusted-builds\" denied the request: Policy paved-road-trusted-builds failed: Images must be signed by the pinned platform workflow with matching repository and main-branch claims.; verification details: image \"ghcr.io/surya-8143/paved-road-demo-service@sha256:e61d3ed25b8a5841c3e5358665b183629bdcd2770a62e5c39d0ad3eca839d52e\", attestor \"demo\": failed to verify cosign signatures: no signatures found\n"
+    },
+    {
+      "case": "unsafe-init",
+      "expected": "deny",
+      "passed": true,
+      "returncode": 1,
+      "response": "Error from server: error when creating \"STDIN\": admission webhook \"vpol.validate.kyverno.svc-fail-finegrained-paved-road-runtime\" denied the request: Policy paved-road-runtime failed: Containers require a read-only filesystem, no privilege escalation, and all capabilities dropped.\n"
+    },
+    {
+      "case": "trusted-still-allowed",
+      "expected": "allow",
+      "passed": true,
+      "returncode": 0,
+      "response": "{\n    \"apiVersion\": \"v1\",\n    \"kind\": \"Pod\",\n    \"metadata\": {\n        \"creationTimestamp\": \"2026-11-20T14:09:17Z\",\n        \"generation\": 1,\n        \"name\": \"check-trusted-still-allowed\",\n        \"namespace\": \"paved-road-demo\",\n        \"uid\": \"cbb1b0fa-43d8-45d8-bafd-cc4d580c6a2c\"\n    },\n    \"spec\": {\n        \"automountServiceAccountToken\": false,\n        \"containers\": [\n            {\n                \"image\": \"ghcr.io/surya-8143/paved-road-demo-service@sha256:4a7ed1dabc8e3ff651cd88b6eec2aaebcb937705805113cdfcdf3f2b2fef6a70\",\n                \"imagePullPolicy\": \"IfNotPresent\",\n                \"name\": \"app\",\n                \"resources\": {\n                    \"limits\": {\n                        \"cpu\": \"500m\",\n                        \"memory\": \"256Mi\"\n                    },\n                    \"requests\": {\n                        \"cpu\": \"100m\",\n                        \"memory\": \"128Mi\"\n                    }\n                },\n                \"securityContext\": {\n                    \"allowPrivilegeEscalation\": false,\n                    \"capabilities\": {\n                        \"drop\": [\n                            \"ALL\"\n                        ]\n                    },\n                    \"readOnlyRootFilesystem\": true\n                },\n                \"terminationMessagePath\": \"/dev/termination-log\",\n                \"terminationMessagePolicy\": \"File\"\n            }\n        ],\n        \"dnsPolicy\": \"ClusterFirst\",\n        \"enableServiceLinks\": true,\n        \"preemptionPolicy\": \"PreemptLowerPriority\",\n        \"priority\": 0,\n        \"restartPolicy\": \"Never\",\n        \"schedulerName\": \"default-scheduler\",\n        \"securityContext\": {\n            \"runAsGroup\": 10001,\n            \"runAsNonRoot\": true,\n            \"runAsUser\": 10001,\n            \"seccompProfile\": {\n                \"type\": \"RuntimeDefault\"\n            }\n        },\n        \"serviceAccount\": \"default\",\n        \"serviceAccountName\": \"default\",\n        \"terminationGracePeriodSeconds\": 30,\n        \"tolerations\": [\n            {\n                \"effect\": \"NoExecute\",\n                \"key\": \"node.kubernetes.io/not-ready\",\n                \"operator\": \"Exists\",\n                \"tolerationSeconds\": 300\n            },\n            {\n                \"effect\": \"NoExecute\",\n                \"key\": \"node.kubernetes.io/unreachable\",\n                \"operator\": \"Exists\",\n                \"tolerationSeconds\": 300\n            }\n        ]\n    },\n    \"status\": {\n        \"phase\": \"Pending\",\n        \"qosClass\": \"Burstable\"\n    }\n}\n"
+    }
+  ]
+}

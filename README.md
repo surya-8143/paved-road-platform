@@ -2,7 +2,7 @@
 
 A small platform-engineering project for reproducible Python services, reviewed AWS serverless infrastructure, and local Kubernetes admission controls.
 
-**Status: implementation in progress.** The public supply-chain pipeline has passed for two service repositories. Offline infrastructure policies and local Argo CD/Kyverno admission and recovery checks are verified. AWS deployment is blocked by IAM restrictions on the owner's managed Free Plan project account. No live AWS deployment, zero-cost guarantee, or production-readiness claim is made.
+**Status: implementation in progress.** The public supply-chain pipeline has passed for two service repositories. Offline infrastructure policies and local Argo CD/Kyverno admission and recovery checks are verified. The owner selected the personal AWS Free Plan. Its IAM federation restriction blocks GitHub-to-AWS OIDC; the local temporary-credential deployment profile is being validated, and its private state/runtime-role bootstrap has succeeded. No zero-cost guarantee or production-readiness claim is made.
 
 ## Repositories
 
@@ -45,6 +45,6 @@ The fixture intentionally pins an old Django and Jinja2 versions. It is never in
 
 Vulnerability results reflect the database available at scan time; a signature authenticates an artifact and signer, not its safety. Pinning reduces accidental change but requires deliberate updates. Public CI logs, signatures, and transparency-log entries disclose repository and build identity. GitHub's standard runners are free for public repositories; artifacts have short retention and are not permanent release storage.
 
-See [project status](docs/PROJECT_STATUS.md), [local setup](docs/LOCAL_SETUP.md), and [version record](docs/VERSIONS.md). The [Kubernetes runbook](docs/KUBERNETES.md) covers setup, live enforcement checks and recovery. AWS deployment, account-level operations and final portfolio evidence remain on the acceptance checklist.
+See [project status](docs/PROJECT_STATUS.md), [local setup](docs/LOCAL_SETUP.md), and [version record](docs/VERSIONS.md). The [Kubernetes runbook](docs/KUBERNETES.md) covers setup, live enforcement checks and recovery. The [personal Free Plan runbook](docs/AWS_BOOTSTRAP.md) documents the selected cloud path, exact saved-plan workflow and limits. Live service operations and final portfolio evidence remain on the acceptance checklist.
 
 Licensed under Apache-2.0.

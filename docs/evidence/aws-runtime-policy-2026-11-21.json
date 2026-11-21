@@ -1,0 +1,53 @@
+{
+  "at": "2026-11-21T01:21:01.2127080+00:00",
+  "kind": "IAM policy simulation; not actual role assumption",
+  "region": "ap-southeast-2",
+  "cases": [
+    {
+      "case": "own-counter",
+      "action": "dynamodb:UpdateItem",
+      "decision": "allowed",
+      "boundary": {
+        "AllowedByPermissionsBoundary": true
+      },
+      "passed": true
+    },
+    {
+      "case": "different-key",
+      "action": "dynamodb:UpdateItem",
+      "decision": "implicitDeny",
+      "boundary": {
+        "AllowedByPermissionsBoundary": false
+      },
+      "passed": true
+    },
+    {
+      "case": "other-service-table",
+      "action": "dynamodb:UpdateItem",
+      "decision": "implicitDeny",
+      "boundary": {
+        "AllowedByPermissionsBoundary": false
+      },
+      "passed": true
+    },
+    {
+      "case": "table-deletion",
+      "action": "dynamodb:DeleteTable",
+      "decision": "implicitDeny",
+      "boundary": {
+        "AllowedByPermissionsBoundary": false
+      },
+      "passed": true
+    },
+    {
+      "case": "iam-administration",
+      "action": "iam:CreateRole",
+      "decision": "implicitDeny",
+      "boundary": {
+        "AllowedByPermissionsBoundary": false
+      },
+      "passed": true
+    }
+  ],
+  "passed": true
+}

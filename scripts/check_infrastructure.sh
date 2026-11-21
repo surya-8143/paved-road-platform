@@ -14,7 +14,7 @@ with zipfile.ZipFile(path, 'w') as archive:
     info = zipfile.ZipInfo('app/main.py', date_time=(2020,1,1,0,0,0))
     archive.writestr(info, '# Offline fixture only; never deploy this file.\n')
 PY
-tofu fmt -check -recursive modules examples
+tofu fmt -check -recursive modules examples bootstrap deploy
 tofu -chdir=modules/serverless-service init -backend=false -input=false -lockfile=readonly
 tofu -chdir=modules/serverless-service validate
 tofu -chdir=modules/serverless-service test
@@ -22,3 +22,11 @@ tofu -chdir=examples/offline init -backend=false -input=false -lockfile=readonly
 tofu -chdir=examples/offline validate
 tofu -chdir=examples/offline plan -refresh=false -input=false -out=../../build/offline.tfplan
 tofu -chdir=examples/offline show -json ../../build/offline.tfplan > build/offline-plan.json
+
+tofu -chdir=bootstrap init -backend=false -input=false -lockfile=readonly
+tofu -chdir=bootstrap validate
+tofu -chdir=bootstrap test -json -verbose > build/bootstrap-tests.jsonl
+python3 scripts/check_bootstrap.py build/bootstrap-tests.jsonl
+
+tofu -chdir=deploy/service init -backend=false -input=false -lockfile=readonly
+tofu -chdir=deploy/service validate

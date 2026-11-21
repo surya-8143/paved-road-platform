@@ -26,3 +26,4 @@ crash.log
 
 # Generated non-deployable infrastructure test ZIP
 modules/serverless-service/tests/fixture.zip
+*.tfvars.json

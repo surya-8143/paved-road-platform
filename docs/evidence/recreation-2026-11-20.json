@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-11-20T13:57:04.382344+00:00",
+  "platform_commit": "d1f4e8b6972f91336b706d61c1693267ad17d3e0",
+  "old_node_uid": "3d52cbde-745b-4642-bae1-5b3d8865abe5",
+  "other_container_count": 21,
+  "passed": true,
+  "rebuild_seconds": 690.591,
+  "new_node_uid": "b7fe7c11-66af-49c0-a025-247054b6d0ef",
+  "other_containers_preserved": true,
+  "checks_sha256": {
+    "admission-evidence.json": "d7efd9239eb47ed2f2e3ab02030fc5103b736d031674906d94a1bf6911835ee0",
+    "recovery-evidence.json": "0dd4fe8ac13d327d6902440fa7f6127bcb0b17ba393293eac39ccf0529badff1"
+  }
+}

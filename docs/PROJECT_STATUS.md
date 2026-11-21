@@ -1,8 +1,8 @@
 # Project status
 
-Updated: 2026-11-20 (Asia/Kolkata).
+Updated: 2026-11-21 (Asia/Kolkata).
 
-**The complete project is not finished.** Public CI/release signing, offline infrastructure policy and local GitOps/admission are implemented and tested. Live AWS deployment, account-level operations and teardown remain unverified. The personal managed Free Plan account blocks IAM identity-provider setup; the college AWS Academy Learner Lab is confirmed, with IAM capabilities still being checked. No account upgrade or AWS deployment has been performed.
+**The complete project is not finished.** Public CI/release signing, offline infrastructure policy and local GitOps/admission are implemented and tested. Live AWS service deployment, account-level operations and teardown are under validation. The personal managed Free Plan account blocks IAM identity-provider setup; the college AWS Academy Learner Lab is confirmed, whose Readme forbids the custom IAM roles needed for the full design. No account upgrade has been performed. The Free Plan bootstrap has now been applied successfully; service deployment is being validated.
 
 ## Constraints
 
@@ -21,7 +21,7 @@ Updated: 2026-11-20 (Asia/Kolkata).
 | Packaging | Identical ZIP SHA-256 across separate local environments and hosted CI |
 | Supply chain | Native AMD64/ARM64 build and scan, exact scanned-image publication, keyless signatures, SBOM attestations, signed ZIP and release manifest, independent verification |
 | Negative gates | Real vulnerable dependencies blocked publication; empty scanner inventory also blocked release |
-| Infrastructure | OpenTofu format/validate, 3 mocked service-module tests, real offline plan, 18 policy checks; 18 platform unit/regression tests |
+| Infrastructure | OpenTofu format/validate, 3 mocked service-module tests, real offline plan, 18 policy checks; 32 platform unit/regression tests |
 | Policy scope | Nested/unchanged resources, create-before-destroy peaks, other-stack capacity, critical unknowns, expired public exceptions and URL/function matching |
 | Second service | Generated through GitHub template API; first full successful CI run elapsed 221 seconds (not total onboarding time) |
 | GitOps | Argo CD reconciles the public demo GitOps path; application reached Synced/Healthy with an immutable signed image |
@@ -32,10 +32,14 @@ Raw local admission/recovery evidence is tracked under `docs/evidence/`; full bu
 
 ## Remaining acceptance work
 
-- [ ] Finish and record clean-checkout cluster recreation; repeat admission/recovery checks on the new node.
-- [ ] Resolve AWS account compatibility without assuming that a college lab permits IAM/OIDC administration.
-- [ ] Bootstrap scoped roles, boundaries, GitHub OIDC trust and versioned/encrypted state storage in a compatible account.
-- [ ] Verify the actual GitHub OIDC subject, including immutable repository/owner IDs; test rejected repository/branch contexts.
+- [x] Recreated the cluster from a clean checkout: 690.591 seconds to ready, then all 15 admission and 7 recovery checks passed; other containers preserved.
+- [x] Read the actual college lab restrictions; custom role creation is forbidden.
+- [x] User selected the personal AWS account. Dedicated CLI login verified.
+- [x] Selected the Free Plan compatibility profile after the owner declined Paid Plan/advanced activation. OIDC remains unavailable and is not a completion claim.
+- [x] Prepared and offline-tested [personal-account bootstrap](AWS_BOOTSTRAP.md): six mocked plans plus rendered IAM boundary checks.
+- [x] Applied the reviewed Free Plan bootstrap: private state bucket and two bounded runtime roles. Verified five positive/negative runtime IAM policy simulations (not STS role assumptions).
+- [x] Both service workflows verified actual STS-audience OIDC subjects with immutable owner/repository IDs on main.
+- [ ] Execute positive and negative AWS STS role-assumption tests.
 - [ ] Add and execute cloud deployment with fresh account inventory, exact saved-plan application and verified matching release package.
 - [ ] Verify concurrency quotas, live DynamoDB writes, authenticated endpoint, temporary reviewed public exception and authentication restoration.
 - [ ] Implement/execute cloud drift, usage and charge/credit monitoring; do not treat budget alerts as a spending cap.
@@ -57,4 +61,8 @@ AWS documents restrictions on identity-provider operations for this account conf
 - [Compare sign-up options](https://docs.aws.amazon.com/accounts/latest/reference/sign-up-for-aws.html)
 - [GitHub OIDC subject formats](https://docs.github.com/en/actions/reference/security/oidc)
 
-The college screenshots confirm AWS Academy Learner Lab, a USD 50 budget limit (remaining balance not shown), a voclabs role session and us-east-1. This establishes lab type, not permission to create roles or OIDC providers. The lab instructions must be checked before selecting an AWS deployment path.
+The college screenshots confirm AWS Academy Learner Lab, a USD 50 budget limit (remaining balance not shown), a voclabs role session and us-east-1. The supplied lab instructions explicitly prohibit custom roles and cap Lambda at 10 concurrent execution environments. The owner reports USD 32.10 used (USD 17.90 displayed remaining), with budget reporting delayed 8-12 hours. This lab can support a limited runtime demonstration, not the full custom-IAM/OIDC design.
+
+Live personal-account preflight: IAM provider listing explicitly denied by an organization SCP; no project-path IAM roles found; selected region reported Lambda concurrency/unreserved capacity 400 and zero functions. The initial checks were read-only. Six bootstrap mock tests pass. On 2026-11-21, a saved bootstrap plan successfully created 13 managed resources: seven S3 bucket/configuration resources plus two runtime roles, boundaries and inline policies.
+
+The selected implementation path now keeps the personal Free Plan, with federation disabled by default and local short-lived CLI deployment implemented and undergoing live acceptance. No long-lived keys are to be put in GitHub. The original automated AWS OIDC deployment remains unavailable and must not be claimed complete.

@@ -1,0 +1,11 @@
+{
+  "iss": "https://token.actions.githubusercontent.com",
+  "aud": "sts.amazonaws.com",
+  "sub": "repo:surya-8143@194671008/paved-road-template@1464428547:ref:refs/heads/main",
+  "repository": "surya-8143/paved-road-template",
+  "repository_id": "1464428547",
+  "repository_owner_id": "194671008",
+  "ref": "refs/heads/main",
+  "sha": "d6e258071476cb56012e18fc2d84a8225b550a9a",
+  "event_name": "workflow_dispatch"
+}
